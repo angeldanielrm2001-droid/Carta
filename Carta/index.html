@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fdeff3">
+  <title>Cartita</title>
+
+  <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+  <!-- Corazones decorativos del fondo (los genera script.js) -->
+  <div class="corazones" id="corazones" aria-hidden="true"></div>
+
+  <main class="escenario">
+
+    <!-- =====================================================================
+        📷 FOTOS (4 marcos)
+        Escribe la ruta de tu imagen dentro de src="" en cada etiqueta <img>.
+        Ejemplo:  <img src="foto1.jpg" alt="Nosotros">
+        Mientras src esté vacío, el marco muestra un corazón de relleno.
+        ===================================================================== -->
+
+    <!-- MARCO 1 · Estampa postal (arriba izquierda) -->
+    <figure class="marco marco--estampa">
+      <div class="estampa">
+        <div class="foto">
+          <!-- 📷 FOTO 1: pon la ruta de tu imagen en src="" -->
+          <img src="foto1.jpeg" alt="">
+        </div>
+      </div>
+    </figure>
+
+    <!-- MARCO 2 · Polaroid con cinta (arriba derecha) -->
+    <figure class="marco marco--polaroid">
+      <span class="cinta" aria-hidden="true"></span>
+      <div class="polaroid">
+        <div class="foto">
+          <!-- 📷 FOTO 2: pon la ruta de tu imagen en src="" -->
+          <img src="foto2.jpeg" alt="">
+        </div>
+      </div>
+    </figure>
+
+    <!-- MARCO 3 · Corazón (abajo izquierda) -->
+    <figure class="marco marco--corazon">
+      <div class="corazon-borde">
+        <div class="corazon-blanco">
+          <div class="foto">
+            <!-- 📷 FOTO 3: pon la ruta de tu imagen en src="" -->
+            <img src="foto3.jpeg" alt="">
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- MARCO 4 · Óvalo con lazo (abajo derecha) -->
+    <figure class="marco marco--ovalo">
+      <div class="ovalo">
+        <div class="foto">
+          <!-- 📷 FOTO 4: pon la ruta de tu imagen en src="" -->
+          <img src="foto4.jpeg" alt="">
+        </div>
+      </div>
+    </figure>
+
+
+    <!-- =====================================================================
+      💌 SOBRE (no necesitas tocar nada aquí)
+      ===================================================================== -->
+    <div class="sobre-zona" id="sobre-zona">
+      <div class="sobre-envoltura">
+        <div class="sobre">
+
+          <div class="sobre__fondo"></div>
+
+          <!-- Carta que asoma del sobre (al tocarla se vuelve a leer) -->
+          <button class="sobre__carta" id="carta-sobre" type="button" aria-label="Leer la carta" disabled></button>
+
+          <!-- Frente del sobre -->
+          <svg class="sobre__frente" viewBox="0 0 700 500" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="gFrente" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fbd3de"/>
+                <stop offset="1" stop-color="#f3adc0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 0 L350 240 L700 0 L700 500 L0 500 Z" fill="url(#gFrente)"/>
+            <path d="M0 500 L300 290 M700 500 L400 290" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" vector-effect="non-scaling-stroke"/>
+            <path d="M0 0 L350 240 L700 0" fill="none" stroke="#d9748f" stroke-opacity=".45" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          </svg>
+
+          <!-- Solapa (cara exterior e interior) -->
+          <div class="solapa">
+            <svg class="solapa__ext" viewBox="0 0 700 240" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="gSolapaExt" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#f7bccd"/>
+                  <stop offset="1" stop-color="#ee9db4"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 0 L700 0 L350 240 Z" fill="url(#gSolapaExt)"/>
+              <path d="M0 0 L350 240 L700 0" fill="none" stroke="#d9748f" stroke-opacity=".5" stroke-width="2" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <svg class="solapa__int" viewBox="0 0 700 240" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="gSolapaInt" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#e98ba5"/>
+                  <stop offset="1" stop-color="#f2adc0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 0 L700 0 L350 240 Z" fill="url(#gSolapaInt)"/>
+            </svg>
+          </div>
+
+          <!-- Sello de cera con corazón: al hacer clic se abre el sobre -->
+          <button class="sello" id="sello" type="button" aria-label="Abrir el sobre">
+            <span class="sello__disco"><span class="sello__corazon"></span></span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Textos de ayuda bajo el sobre (puedes cambiarlos) -->
+      <p class="pista pista--abrir" aria-hidden="true">Toca el sello para abrir</p>
+      <p class="pista pista--releer" aria-hidden="true">Toca la carta para leerla de nuevo</p>
+    </div>
+
+  </main>
+
+
+  <!-- =======================================================================
+      💌 VENTANA EMERGENTE CON LA CARTA
+      ======================================================================= -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal__fondo" data-cerrar></div>
+
+    <article class="papel" id="papel" role="dialog" aria-modal="true" aria-labelledby="carta-titulo">
+      <span class="papel__adorno papel__adorno--1" aria-hidden="true"></span>
+      <span class="papel__adorno papel__adorno--2" aria-hidden="true"></span>
+      <span class="papel__adorno papel__adorno--3" aria-hidden="true"></span>
+      <span class="papel__adorno papel__adorno--4" aria-hidden="true"></span>
+
+      <button class="papel__cerrar" id="cerrar" type="button" data-cerrar aria-label="Cerrar la carta"></button>
+
+      <div class="papel__contenido" id="papel-contenido" tabindex="0">
+<!--================Texto de la carta=================-->
+
+        <h2 class="carta__titulo" id="carta-titulo">Feliz Cumpleaños mi caramelito.</h2>
+
+        <p>Te quiero mucho y quiero que sepas que estoy muy feliz de que seas parte de mi vida, y también agradecido de que me dejes ser parte de la tuya.</p>
+        <p>Desde la primera vez que hablamos, te convertiste en alguien muy especial para mí, y sin pedir permiso te hiciste un lugar en mi corazón.</p>
+        <p>Estoy muy orgulloso de vos y de quién sos, alguien tan atenta, amable, cariñosa y linda en todos los sentidos.
+        Quiero desearte un feliz cumpleaños y todo lo bueno del mundo; que sigas creciendo sin perder todo lo que te hace ser vos; que logres cada una de tus metas y sueños. Yo sé que sos capaz de hacer eso y mucho más. <br> 
+        Eres alguien muy increíble para mí y te admiro muchísimo.
+</p>
+        <p>Feliz cumpleaños, mi chinita.</p>
+        <p>Te amo &lt3. </p>
+
+        <p class="carta__firma">Angel</p>
+
+        <!-- ================= FIN DEL TEXTO DE LA CARTA ================= -->
+
+      </div>
+    </article>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
